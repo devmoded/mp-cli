@@ -33,7 +33,11 @@ func (o Output) Progress(msg Message) {
 		fmt.Println(string(b))
 		return
 	}
-	fmt.Printf("\r%s: %s", msg.Event, msg.Message)
+	message := fmt.Sprintf("%d bytes downloaded", msg.BytesProgress)
+	if msg.Total > 0 {
+		message = fmt.Sprintf("%.1f%% downloaded", float64(msg.BytesProgress)/float64(msg.Total)*100)
+	}
+	fmt.Printf("\r%s: %s", msg.Event, message)
 }
 
 func NewOutput(formatJSON bool) Output {

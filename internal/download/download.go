@@ -23,20 +23,10 @@ func (pr *ProgressReader) Read(buf []byte) (int, error) {
 	n, err := pr.Reader.Read(buf)
 	pr.Downloaded += int64(n)
 
-	var p float64
-	b := pr.Downloaded
-	// Вынести представление данных в Progress()
-	message := fmt.Sprintf("%d bytes downloaded", pr.Downloaded)
-	if pr.Total > 0 {
-		p = float64(pr.Downloaded) / float64(pr.Total) * 100
-		message = fmt.Sprintf("%.1f%% downloaded", p)
-	}
-
 	pr.Output.Progress(output.Message{
 		Event:           "download",
-		Message:         message,
-		PercentProgress: p,
-		BytesProgress:   b,
+		PercentProgress: float64(pr.Downloaded) / float64(pr.Total) * 100,
+		BytesProgress:   pr.Downloaded,
 		Total:           pr.Total,
 	})
 	return n, err
