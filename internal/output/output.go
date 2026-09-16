@@ -5,8 +5,16 @@ import (
 	"fmt"
 )
 
+type Event string
+
+const (
+	EventMessage  Event = "message"
+	EventDownload Event = "download"
+	EventError    Event = "error"
+)
+
 type Message struct {
-	Event           string  `json:"event"` // TODO: Придумать что-то с типом событий
+	Event           Event   `json:"event"`
 	Message         string  `json:"message,omitempty"`
 	PercentProgress float64 `json:"percent_progress,omitempty"`
 	BytesProgress   int64   `json:"bytes_progress,omitempty"`
@@ -25,7 +33,7 @@ func (o Output) Println(msg Message) {
 		return
 	}
 	switch msg.Event {
-	case "message":
+	case EventMessage:
 		fmt.Printf("%s\n", msg.Message)
 	default:
 		fmt.Printf("%s: %s\n", msg.Event, msg.Message)

@@ -24,7 +24,7 @@ func (pr *ProgressReader) Read(buf []byte) (int, error) {
 	pr.Downloaded += int64(n)
 
 	pr.Output.Progress(output.Message{
-		Event:           "download",
+		Event:           output.EventDownload,
 		PercentProgress: float64(pr.Downloaded) / float64(pr.Total) * 100,
 		BytesProgress:   pr.Downloaded,
 		Total:           pr.Total,
@@ -48,34 +48,34 @@ func fileExists(path string) bool {
 func Download(o output.Output, url string, path string, filename string) {
 	r, err := http.Get(url)
 	if err != nil {
-		o.Println(output.Message{Event: "error", Message: err.Error()})
+		o.Println(output.Message{Event: output.EventError, Message: err.Error()})
 	}
 	defer r.Body.Close()
 
 	if r.StatusCode != http.StatusOK {
-		o.Println(output.Message{Event: "error", Message: r.Status})
+		o.Println(output.Message{Event: output.EventError, Message: r.Status})
 	}
 
 	if filename == "" {
 		filename, err = getFilename(url)
 		if err != nil {
-			o.Println(output.Message{Event: "error", Message: err.Error()})
+			o.Println(output.Message{Event: output.EventError, Message: err.Error()})
 		}
 	}
 
 	path, err = filepath.Abs(path)
 	if err != nil {
-		o.Println(output.Message{Event: "error", Message: err.Error()})
+		o.Println(output.Message{Event: output.EventError, Message: err.Error()})
 	}
 	path = filepath.Join(path, filename)
 	if fileExists(path) {
-		o.Println(output.Message{Event: "error", Message: path + " is exists"})
+		o.Println(output.Message{Event: output.EventError, Message: path + " is exists"})
 		return
 	}
 
 	f, err := os.Create(path)
 	if err != nil {
-		o.Println(output.Message{Event: "error", Message: err.Error()})
+		o.Println(output.Message{Event: output.EventError, Message: err.Error()})
 	}
 	defer f.Close()
 
@@ -86,13 +86,13 @@ func Download(o output.Output, url string, path string, filename string) {
 	}
 
 	o.Println(output.Message{
-		Event:    "download",
+		Event:    output.EventDownload,
 		Message:  "start downloading " + filename + " in " + path,
 		FilePath: path,
 	})
 	_, err = io.Copy(f, pr)
 	if err != nil {
-		o.Println(output.Message{Event: "error", Message: err.Error()})
+		o.Println(output.Message{Event: output.EventError, Message: err.Error()})
 	}
 	fmt.Println()
 }

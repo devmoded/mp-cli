@@ -18,16 +18,23 @@ var inspectCmd = &cobra.Command{
 func inspect(cmd *cobra.Command, args []string) {
 	path, err := filepath.Abs(args[0])
 	if err != nil {
-		out.Println(output.Message{Event: "error", Message: err.Error()})
+		out.Println(output.Message{Event: output.EventError, Message: err.Error()})
+		return
 	}
-	a := archive.Open(path)
+	a, err := archive.Open(path)
+	if err != nil {
+		out.Println(output.Message{Event: output.EventError, Message: err.Error()})
+		return
+	}
 
 	meta, entries, err := a.Inspect()
 	if err != nil {
-		out.Println(output.Message{Event: "error", Message: err.Error()})
+		out.Println(output.Message{Event: output.EventError, Message: err.Error()})
+		return
 	}
-	out.Println(output.Message{Event: "message", Message: meta.Sprint()})
+	out.Println(output.Message{Event: output.EventMessage, Message: meta.Sprint()})
 	for _, entry := range entries {
-		out.Println(output.Message{Event: "message", Message: entry.Path})
+		out.Println(output.Message{Event: output.EventMessage, Message: entry.Path})
+		return
 	}
 }

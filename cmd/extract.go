@@ -24,18 +24,26 @@ mp-cli extract modpack.zip . --entry info.json --entry mods
 func extract(cmd *cobra.Command, args []string) {
 	path, err := filepath.Abs(args[0])
 	if err != nil {
-		out.Println(output.Message{Event: "error", Message: err.Error()})
+		out.Println(output.Message{Event: output.EventError, Message: err.Error()})
+		return
 	}
 	dest, err := filepath.Abs(args[0])
 	if err != nil {
-		out.Println(output.Message{Event: "error", Message: err.Error()})
+		out.Println(output.Message{Event: output.EventError, Message: err.Error()})
+		return
 	}
 
-	a := archive.Open(path)
+	a, err := archive.Open(path)
+	if err != nil {
+		out.Println(output.Message{Event: output.EventError, Message: err.Error()})
+		return
+	}
+
 	if extractEntries == nil {
 		err := a.ExtractAll(dest)
 		if err != nil {
-			out.Println(output.Message{Event: "error", Message: err.Error()})
+			out.Println(output.Message{Event: output.EventError, Message: err.Error()})
+			return
 		}
 	}
 }
