@@ -24,7 +24,11 @@ func (o Output) Println(msg Message) {
 		fmt.Println(string(b))
 		return
 	}
-	fmt.Printf("%s: %s\n", msg.Event, msg.Message)
+	if msg.Event == "message" {
+		fmt.Printf("%s\n", msg.Message)
+	} else {
+		fmt.Printf("%s: %s\n", msg.Event, msg.Message)
+	}
 }
 
 func (o Output) Progress(msg Message) {
