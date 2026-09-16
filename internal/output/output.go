@@ -24,9 +24,10 @@ func (o Output) Println(msg Message) {
 		fmt.Println(string(b))
 		return
 	}
-	if msg.Event == "message" {
+	switch msg.Event {
+	case "message":
 		fmt.Printf("%s\n", msg.Message)
-	} else {
+	default:
 		fmt.Printf("%s: %s\n", msg.Event, msg.Message)
 	}
 }
