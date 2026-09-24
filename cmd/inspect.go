@@ -32,5 +32,5 @@ func inspect(cmd *cobra.Command, args []string) {
 		out.Println(output.Message{Event: output.EventError, Message: err.Error()})
 		return
 	}
-	out.Println(output.Message{Event: output.EventMessage, Message: i})
+	out.Println(output.Message{Event: output.EventInspect, Message: i})
 }
