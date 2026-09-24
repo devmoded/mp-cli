@@ -30,7 +30,7 @@ func init() {
 		out = output.NewOutput(formatJSON)
 	}
 
-	downloadCmd.Flags().StringVarP(&downloadFilename, "filename", "f", "", "Override filename")
+	downloadCmd.Flags().StringVarP(&downloadFilename, "filename", "f", "", "Override filename (with extension)")
 	extractCmd.Flags().StringArrayVarP(&extractEntries, "entry", "e", nil, "Extract only the specified entries")
 
 	rootCmd.AddCommand(downloadCmd)

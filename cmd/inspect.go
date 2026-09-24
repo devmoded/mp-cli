@@ -27,14 +27,10 @@ func inspect(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	meta, entries, err := a.Inspect()
+	i, err := a.Inspect()
 	if err != nil {
 		out.Println(output.Message{Event: output.EventError, Message: err.Error()})
 		return
 	}
-	out.Println(output.Message{Event: output.EventMessage, Message: meta.Sprint()})
-	for _, entry := range entries {
-		out.Println(output.Message{Event: output.EventMessage, Message: entry.Path})
-		return
-	}
+	out.Println(output.Message{Event: output.EventMessage, Message: i})
 }

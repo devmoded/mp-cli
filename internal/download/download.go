@@ -24,7 +24,7 @@ func (pr *ProgressReader) Read(buf []byte) (int, error) {
 	pr.Downloaded += int64(n)
 
 	pr.Output.Progress(output.Message{
-		Event:           output.EventDownload,
+		Event:           output.EventProgress,
 		PercentProgress: float64(pr.Downloaded) / float64(pr.Total) * 100,
 		BytesProgress:   pr.Downloaded,
 		Total:           pr.Total,
@@ -86,7 +86,7 @@ func Download(o output.Output, url string, path string, filename string) {
 	}
 
 	o.Println(output.Message{
-		Event:    output.EventDownload,
+		Event:    output.EventProgress,
 		Message:  "start downloading " + filename + " in " + path,
 		FilePath: path,
 	})

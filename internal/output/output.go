@@ -9,17 +9,29 @@ type Event string
 
 const (
 	EventMessage  Event = "message"
-	EventDownload Event = "download"
+	EventInspect  Event = "inspect"
+	EventProgress Event = "progress"
 	EventError    Event = "error"
 )
 
 type Message struct {
 	Event           Event   `json:"event"`
-	Message         string  `json:"message,omitempty"`
+	Message         any     `json:"message,omitempty"`
 	PercentProgress float64 `json:"percent_progress,omitempty"`
 	BytesProgress   int64   `json:"bytes_progress,omitempty"`
 	Total           int64   `json:"total,omitempty"`
 	FilePath        string  `json:"filepath,omitempty"`
+}
+
+func (m Message) MessageText() string {
+	switch v := m.Message.(type) {
+	case string:
+		return v
+	case fmt.Stringer:
+		return v.String()
+	default:
+		return ""
+	}
 }
 
 type Output struct {
@@ -34,9 +46,9 @@ func (o Output) Println(msg Message) {
 	}
 	switch msg.Event {
 	case EventMessage:
-		fmt.Printf("%s\n", msg.Message)
+		fmt.Printf("%s\n", msg.MessageText())
 	default:
-		fmt.Printf("%s: %s\n", msg.Event, msg.Message)
+		fmt.Printf("%s: %s\n", msg.Event, msg.MessageText())
 	}
 }
 
