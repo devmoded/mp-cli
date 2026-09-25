@@ -1,10 +1,6 @@
 package cmd
 
 import (
-	"path/filepath"
-
-	"github.com/devmoded/mp-cli/internal/archive"
-	"github.com/devmoded/mp-cli/internal/output"
 	"github.com/spf13/cobra"
 )
 
@@ -22,28 +18,32 @@ mp-cli extract modpack.zip . --entry info.json --entry mods
 }
 
 func extract(cmd *cobra.Command, args []string) {
-	path, err := filepath.Abs(args[0])
-	if err != nil {
-		out.Println(output.Message{Event: output.EventError, Message: err.Error()})
-		return
-	}
-	dest, err := filepath.Abs(args[0])
-	if err != nil {
-		out.Println(output.Message{Event: output.EventError, Message: err.Error()})
-		return
-	}
-
-	a, err := archive.Open(path)
-	if err != nil {
-		out.Println(output.Message{Event: output.EventError, Message: err.Error()})
-		return
-	}
-
-	if extractEntries == nil {
-		err := a.ExtractAll(dest)
-		if err != nil {
-			out.Println(output.Message{Event: output.EventError, Message: err.Error()})
-			return
-		}
-	}
+	// path, err := filepath.Abs(args[0])
+	//
+	//	if err != nil {
+	//		out.Println(output.Message{Event: output.EventError, Message: err.Error()})
+	//		return
+	//	}
+	//
+	// dest, err := filepath.Abs(args[0])
+	//
+	//	if err != nil {
+	//		out.Println(output.Message{Event: output.EventError, Message: err.Error()})
+	//		return
+	//	}
+	//
+	// a, err := modpack.Open(path)
+	//
+	//	if err != nil {
+	//		out.Println(output.Message{Event: output.EventError, Message: err.Error()})
+	//		return
+	//	}
+	//
+	//	if extractEntries == nil {
+	//		err := a.Extract(dest)
+	//		if err != nil {
+	//			out.Println(output.Message{Event: output.EventError, Message: err.Error()})
+	//			return
+	//		}
+	//	}
 }

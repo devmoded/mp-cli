@@ -3,7 +3,7 @@ package cmd
 import (
 	"path/filepath"
 
-	"github.com/devmoded/mp-cli/internal/archive"
+	"github.com/devmoded/mp-cli/internal/modpack"
 	"github.com/devmoded/mp-cli/internal/output"
 	"github.com/spf13/cobra"
 )
@@ -21,13 +21,13 @@ func inspect(cmd *cobra.Command, args []string) {
 		out.Println(output.Message{Event: output.EventError, Message: err.Error()})
 		return
 	}
-	a, err := archive.Open(path)
+	a, err := modpack.Open(path)
 	if err != nil {
 		out.Println(output.Message{Event: output.EventError, Message: err.Error()})
 		return
 	}
 
-	i, err := a.Inspect()
+	i, err := modpack.Inspect(a)
 	if err != nil {
 		out.Println(output.Message{Event: output.EventError, Message: err.Error()})
 		return
