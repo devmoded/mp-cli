@@ -45,7 +45,7 @@ func (o Output) Println(msg Message) {
 		return
 	}
 	switch msg.Event {
-	case EventMessage:
+	case EventMessage, EventInspect:
 		fmt.Printf("%s\n", msg.MessageText())
 	default:
 		fmt.Printf("%s: %s\n", msg.Event, msg.MessageText())
